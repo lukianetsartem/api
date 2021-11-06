@@ -7,6 +7,7 @@ require('dotenv/config');
 
 // Routers connection
 const authRouter = require('./routers/auth')
+const userRouter = require('./routers/document')
 
 // Parsers
 const bodyParser = require('body-parser')
@@ -19,5 +20,6 @@ app.use(cookieParser())
 mongoose.connect(process.env.DATABASE).catch(err => console.log(err))
 
 app.use('/auth', authRouter)
+app.use('/user', userRouter)
 
 app.listen(4000)

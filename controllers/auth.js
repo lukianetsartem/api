@@ -4,7 +4,8 @@ const User = require('../models/user')
 
 // Data sending helper
 const sendData = (res, userData) => {
-    res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+    res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true}) // 30d lifetime
+    res.cookie('accessToken', userData.accessToken, {maxAge: 0.5 * 60 * 60 * 1000, httpOnly: true}) // 30min lifetime
     return res.json(userData)
 }
 
