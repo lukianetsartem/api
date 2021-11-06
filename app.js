@@ -1,13 +1,23 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express();
 
-const mongoose = require('mongoose');
-
+// .env import
 require('dotenv/config');
 
-const bodyParser = require('body-parser')
-app.use(bodyParser.json())
+// Routers connection
+const authRouter = require('./routers/auth')
 
+// Parsers
+const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
+
+app.use(bodyParser.json())
+app.use(cookieParser())
+
+// Database connection
 mongoose.connect(process.env.DATABASE).catch(err => console.log(err))
+
+app.use('/auth', authRouter)
 
 app.listen(4000)
