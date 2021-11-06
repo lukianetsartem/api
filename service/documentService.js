@@ -5,16 +5,18 @@ const uuid = require('uuid');
 const createDocument = async (userId) => {
     const user = await User.findOne({_id:userId})
 
-    const newDocument = new Document({
+    const newDocument = await Document.create({
         title: 'Untitled',
         emoji: '',
         cover: '',
         link: uuid.v4(),
-        elements: []
+        elements: [],
+        ownerId: userId
     })
 
-    user.documents.push(newDocument)
+    user.documents.push(newDocument.link)
     user.save()
+
     return newDocument
 }
 
