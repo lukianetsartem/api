@@ -1,6 +1,6 @@
 const documentService = require('../service/documentService')
 
-// Get documents controller
+// Add document controller
 const addDocument = (req, res) => {
     documentService.createDocument(req.userId)
         .then(document => {
@@ -12,6 +12,18 @@ const addDocument = (req, res) => {
         .catch(e => console.log(e))
 }
 
+// Get document controller
+const getDocument = (req, res) => {
+    documentService.findDocument(req.params.id)
+        .then(document => {
+            res.status(201).json({
+                document: document
+            })
+        })
+        .catch(e => console.log(e))
+}
+
 module.exports = {
-    addDocument
+    addDocument,
+    getDocument
 }
