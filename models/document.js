@@ -9,7 +9,7 @@ const documentSchema = new mongoose.Schema({
     cover: string,
     link: uniqueString,
     elements: {type: Array, required: true},
-    ownerId: uniqueString,
+    ownerId: {type: String, required: true},
 })
 
 module.exports = mongoose.model('Document', documentSchema)
