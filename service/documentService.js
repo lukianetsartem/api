@@ -15,11 +15,12 @@ const createDefaultElement = () => {
 }
 
 const strategies = {
-    DEFAULT: createDefaultElement()
+    DEFAULT: createDefaultElement
 }
 
 const createElementByType = (type) => {
-    return strategies[type]
+    const strategy = strategies[type]
+    return strategy()
 }
 
 const createDocument = async (userId) => {
