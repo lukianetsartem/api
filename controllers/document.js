@@ -1,5 +1,5 @@
 const documentService = require('../service/documentService')
-const User = require("../models/user");
+const Section = require("../models/section");
 
 // Add document controller
 const addDocument = (req, res) => {
@@ -27,6 +27,20 @@ const addElement = async (req, res) => {
         .catch(e => console.log(e))
 }
 
+// Change element type controller
+const changeElementType = (req, res) => {
+    const {documentId, elementId, type} =  req.body
+
+    documentService.changeElementType(req.userId, documentId, elementId, type)
+        .then(document => {
+            res.status(201).json({
+                message: 'Element type changed successfully.',
+                document: document
+            })
+        })
+        .catch(e => console.log(e))
+}
+
 // Get document controller
 const getDocument = (req, res) => {
     documentService.findDocument(req.params.id)
@@ -38,8 +52,17 @@ const getDocument = (req, res) => {
         .catch(e => console.log(e))
 }
 
+// Get menu controller
+const getMenu = async (req, res) => {
+    res.status(201).json({
+        sections: await Section.find()
+    })
+}
+
 module.exports = {
     addDocument,
     addElement,
-    getDocument
+    getDocument,
+    changeElementType,
+    getMenu
 }

@@ -42,8 +42,24 @@ const logout = async (refreshToken) => {
     await tokenService.removeToken(refreshToken)
 }
 
+// User finding service
+const findUser = async (userId) => {
+    const user = await User.findOne({_id: userId})
+    if(!user) errorMiddleware.throwError('User doesn\'t exist')
+    return user
+}
+
+// Does user own provided document
+const doesUserOwnDocument = (user, documentId) => {
+    const doesOwn = user.documents.find(d=> d.toString() === documentId)
+    if(!doesOwn) errorMiddleware.throwError('User doesn\'t own this document.')
+    return doesOwn
+}
+
 module.exports = {
     registration,
     logout,
     login,
+    findUser,
+    doesUserOwnDocument
 }
