@@ -11,6 +11,12 @@ router.post('/change-element-type', authMiddleware, documentController.changeEle
 
 router.post('/change-element-value', authMiddleware, documentController.changeElementValue)
 
+router.post('/change-document-title', authMiddleware, documentController.changeElementTitle)
+
+router.post('/change-document-emoji', authMiddleware, documentController.changeElementEmoji)
+
+router.post('/change-document-cover', authMiddleware, documentController.changeElementCover)
+
 router.get('/get-document/:id', documentController.getDocument)
 
 router.get('/menu', documentController.getMenu)

@@ -163,7 +163,7 @@ const changeElementType = async (userId, documentId, elementId, type) => {
 
     const newElement = changeType(element, type)
     document.elements = document.elements.map(e => checkId(e, elementId) ? newElement : e)
-    //document.save()
+    document.save()
 
     return document
 }
@@ -184,6 +184,36 @@ const changeElementValue = async (userId, documentId, elementId, newValue) => {
     return document
 }
 
+const changeDocumentTitle = async (userId, documentId, newTitle) => {
+    // Taking document from db
+    const document = await getDocumentFromDB(userId, documentId)
+    // Updating the title
+    document.title = newTitle
+    document.save()
+
+    return document
+}
+
+const changeDocumentEmoji = async (userId, documentId, newEmoji) => {
+    // Taking document from db
+    const document = await getDocumentFromDB(userId, documentId)
+    // Updating an emoji
+    document.emoji = newEmoji
+    document.save()
+
+    return document
+}
+
+const changeDocumentCover = async (userId, documentId, newCover) => {
+    // Taking document from db
+    const document = await getDocumentFromDB(userId, documentId)
+    // Updating the cover
+    document.cover = newCover
+    document.save()
+
+    return document
+}
+
 const findDocument = async (documentId) => {
     const document = await Document.findOne({_id: documentId})
     if (!document) errorMiddleware.throwError('Document with provided id doesn\'t exist.')
@@ -195,5 +225,8 @@ module.exports = {
     createElement,
     findDocument,
     changeElementType,
-    changeElementValue
+    changeElementValue,
+    changeDocumentTitle,
+    changeDocumentEmoji,
+    changeDocumentCover
 }
