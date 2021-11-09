@@ -17,6 +17,8 @@ router.post('/change-document-emoji', authMiddleware, documentController.changeD
 
 router.post('/change-document-cover', authMiddleware, documentController.changeDocumentCover)
 
+router.get('/get-documents', authMiddleware, documentController.getDocuments)
+
 router.get('/get-document/:id', documentController.getDocument)
 
 router.get('/menu', documentController.getMenu)

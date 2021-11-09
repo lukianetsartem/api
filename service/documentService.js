@@ -220,10 +220,15 @@ const findDocument = async (documentId) => {
     return document
 }
 
+const findDocuments = async (userId) => {
+    return Document.find({ownerId: userId})
+}
+
 module.exports = {
     createDocument,
     createElement,
     findDocument,
+    findDocuments,
     changeElementType,
     changeElementValue,
     changeDocumentTitle,

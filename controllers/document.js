@@ -93,6 +93,16 @@ const getDocument = (req, res) => {
         .catch(e => console.log(e))
 }
 
+const getDocuments = (req, res) => {
+    documentService.findDocuments(req.userId)
+        .then(documents => {
+            res.status(201).json({
+                documents: documents
+            })
+        })
+        .catch(e => console.log(e))
+}
+
 const getMenu = async (req, res) => {
     res.status(201).json({
         sections: await Section.find()
@@ -103,6 +113,7 @@ module.exports = {
     getMenu,
     getDocument,
     addDocument,
+    getDocuments,
     addElement,
     changeElementType,
     changeElementValue,
