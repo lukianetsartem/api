@@ -9,6 +9,8 @@ router.post('/add-element', authMiddleware, documentController.addElement)
 
 router.post('/change-element-type', authMiddleware, documentController.changeElementType)
 
+router.post('/change-element-value', authMiddleware, documentController.changeElementValue)
+
 router.get('/get-document/:id', documentController.getDocument)
 
 router.get('/menu', documentController.getMenu)

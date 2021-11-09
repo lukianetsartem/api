@@ -100,7 +100,7 @@ const toToDo = (element) => {
         category: "TEXT",
         type: "TO_DO",
         placeholder: "To-do",
-        isChecked: element.isChecked,
+        isChecked: false,
         _id: element._id
     }
 }
@@ -138,23 +138,47 @@ const changeType = (element, type) => {
     return strategy(element)
 }
 
-const changeElementType = async (userId, documentId, elementId, type) => {
+const getDocumentFromDB = async (userId, documentId) => {
     // Getting user
     const user = await userService.findUser(userId)
     // Verifying if user is owner of provided document
     const verifiedDocumentId = userService.doesUserOwnDocument(user, documentId)
     // Taking document from db
-    const document = await findDocument(verifiedDocumentId)
+    return await findDocument(verifiedDocumentId)
+}
 
-    // Finding provided element in database and changing his type
+const checkId = (e, elementId) => e._id.toString() === elementId
+const getElementFromDB = (document, elementId) => {
     const checkId = (e) => e._id.toString() === elementId
-    const element = document.elements.find(e => checkId(e))
+    return document.elements.find(e => checkId(e))
+}
 
+const changeElementType = async (userId, documentId, elementId, type) => {
+    // Taking document from db
+    const document = await getDocumentFromDB(userId, documentId)
+    // Taking element from db
+    const element = getElementFromDB(document, elementId)
     // Checking if provided type equal to exist type
-    if(element.type === type) return document
+    if (element.type === type) return document
 
     const newElement = changeType(element, type)
-    document.elements = document.elements.map(e => checkId(e) ? newElement : e)
+    document.elements = document.elements.map(e => checkId(e, elementId) ? newElement : e)
+    //document.save()
+
+    return document
+}
+
+const changeElementValue = async (userId, documentId, elementId, newValue) => {
+    // Taking document from db
+    const document = await getDocumentFromDB(userId, documentId)
+    // Taking element from db
+    const element = getElementFromDB(document, elementId)
+    // Checking if provided type equal to exist type
+    if (element.value === newValue) return document
+
+    // Replacing an old element with a new one
+    const newElement = {...element, value: newValue}
+    document.elements = document.elements.map(e => checkId(e, elementId) ? newElement : e)
     document.save()
 
     return document
@@ -162,7 +186,7 @@ const changeElementType = async (userId, documentId, elementId, type) => {
 
 const findDocument = async (documentId) => {
     const document = await Document.findOne({_id: documentId})
-    if(!document) errorMiddleware.throwError('Document with provided id doesn\'t exist.')
+    if (!document) errorMiddleware.throwError('Document with provided id doesn\'t exist.')
     return document
 }
 
@@ -170,5 +194,6 @@ module.exports = {
     createDocument,
     createElement,
     findDocument,
-    changeElementType
+    changeElementType,
+    changeElementValue
 }

@@ -41,6 +41,19 @@ const changeElementType = (req, res) => {
         .catch(e => console.log(e))
 }
 
+const changeElementValue = (req, res) => {
+    const {documentId, elementId, newValue} =  req.body
+
+    documentService.changeElementValue(req.userId, documentId, elementId, newValue)
+        .then(document => {
+            res.status(201).json({
+                message: 'Element type changed successfully.',
+                document: document
+            })
+        })
+        .catch(e => console.log(e))
+}
+
 // Get document controller
 const getDocument = (req, res) => {
     documentService.findDocument(req.params.id)
@@ -64,5 +77,6 @@ module.exports = {
     addElement,
     getDocument,
     changeElementType,
+    changeElementValue,
     getMenu
 }
